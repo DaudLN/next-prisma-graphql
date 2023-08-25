@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: restaurantdb
+    environment:
+      POSTGRES_USER: restaurant
+      POSTGRES_PASSWORD: strong_pass
+      POSTGRES_DB: restaurant
+    ports:
+      - 5431:5432

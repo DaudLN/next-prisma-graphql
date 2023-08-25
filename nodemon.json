@@ -1,0 +1,5 @@
+{
+  "watch": ["data"],
+  "ext": "ts,json",
+  "exec": "ts-node"
+}
