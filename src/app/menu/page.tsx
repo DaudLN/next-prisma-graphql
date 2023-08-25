@@ -1,5 +1,6 @@
+import { graphqlClient } from "@/app/graphql/graphql-client";
 import CategoryCard from "@/components/CategoryCard";
-import CategoryData from "@/types/category";
+import { graphql } from "@/gql/gql";
 
 interface Props {
   params: {
@@ -7,25 +8,29 @@ interface Props {
   };
 }
 
-const getData = async (category: string) => {
-  const res = await fetch("http://localhost:3000/api/categories", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error(`HTTP error! status: ${res.status}`);
+const GET_ALL_CATEGORIES = graphql(/* GraphQL */ `
+  query GetAllCategories {
+    categories {
+      primary_key
+      unique_id
+      title
+      description
+      slug
+      image
+      color
+    }
   }
-  return res.json();
-};
+`);
 
-const MenuPage = async ({ params: { category } }: Props) => {
-  const data: CategoryData[] = await getData(category);
+const MenuPage = async () => {
+  const { categories } = await graphqlClient.request(GET_ALL_CATEGORIES);
 
+  if (!categories) throw new Error("An error occurred while fetching data");
   return (
     <div>
       <div className="w-full flex flex-wrap h-1/3 gap-12 bg-cover py-8 md:h-1/2 items-center justify-center ">
-        {data.map((category) => {
-          return <CategoryCard category={category} key={category.slug} />;
+        {categories.map((category) => {
+          return <CategoryCard category={category} key={category?.slug} />;
         })}
       </div>
     </div>

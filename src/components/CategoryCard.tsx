@@ -1,9 +1,9 @@
-import CategoryData from "@/types/category";
+import { Category } from "@/gql/graphql";
 import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
-  category: CategoryData;
+  category: Category;
 };
 
 const CategoryCard = ({ category }: Props) => {
@@ -12,7 +12,7 @@ const CategoryCard = ({ category }: Props) => {
       style={{ backgroundColor: category.color }}
       className={`pb-4 transition-all ease-in-out duration-300 w-72  border border-red-950 cursor-pointer shadow-md`}
     >
-      <Link href={`/category/${category.slug}`}>
+      <Link href={`/menu/${category.slug}`}>
         <Image
           className="object-contain"
           src={`/images/${category.image}`}

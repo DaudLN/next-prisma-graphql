@@ -1,5 +1,9 @@
 import { xprisma, prisma } from "@/utils/prismaClient";
-import { CreateProductInputType } from "./inputTypes";
+import {
+  CreateProductInputType,
+  GetCategoryInputType,
+  GetProductInputType,
+} from "./inputTypes";
 import { YogaInitialContext } from "graphql-yoga";
 import tryCatch from "./try-catch";
 import { GraphQLResolveInfo } from "graphql";
@@ -20,17 +24,29 @@ export const resolvers = {
         400
       );
     },
-    category: async (parent: any, slug: string) => {
-      return prisma.category.findUniqueOrThrow({
-        where: { slug },
-      });
+    category: async (
+      parent: any,
+      { input }: { input: GetCategoryInputType }
+    ) => {
+      return tryCatch(
+        () =>
+          prisma.category.findUniqueOrThrow({
+            where: { slug: input.slug },
+          }),
+        "No category found",
+        400
+      );
     },
 
-    product: async (_: any, slug: string, context: YogaInitialContext) => {
+    product: async (
+      _: any,
+      { input }: { input: GetProductInputType },
+      context: YogaInitialContext
+    ) => {
       return tryCatch(
         () =>
           prisma.product.findUniqueOrThrow({
-            where: { slug },
+            where: { slug: input.slug },
           }),
         "No product found with this slug.",
         404

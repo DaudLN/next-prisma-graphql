@@ -7,7 +7,6 @@ const tryCatch = async <T>(
 ): Promise<T> => {
   try {
     const result = await fn();
-    console.log(result);
     return result;
   } catch (error) {
     throw new CustomGraphQLError(errorMessage, errorCode);

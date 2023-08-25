@@ -2,6 +2,10 @@ export type GetProductInputType = {
   slug: string;
 };
 
+export type GetCategoryInputType = {
+  slug: string;
+};
+
 export type CreateProductInputType = {
   title: string;
   description: string;
